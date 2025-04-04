@@ -6,23 +6,30 @@ console.log("Task manager loaded");
 // - id (уникальный идентификатор)
 // - title (название задачи)
 // - completed (булевое значение выполнена или нет)
-const randomIdGenerator = (title) => {
-  const randomNumber = Math.round(Math.random() *100000)
-  const noSpacesTitle = title.replace(/\s+/g, '');
-  return `${noSpacesTitle}${randomNumber}`
-}
 
 class Task {
+  static lastId = 0;
+  #id // private
   constructor(title) {
     this.title = title
-    this.id = randomIdGenerator(this.title)
+    this.#id = ++Task.lastId
     this.completed = false
+  }
+  // getter for id
+  get id() {
+    return this.#id
+  }
+  toggleComplete() {
+    this.completed = !this.completed
   }
 }
 
 const task1 = new Task("new task")
 
-console.log(task1)
+const task2 = new Task("task2")
+console.log(task2)
+task2.toggleComplete()
+console.log(task2)
 
 // Добавить метод toggleComplete() для смены состояния completed
 
