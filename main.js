@@ -1,23 +1,23 @@
 console.log("Task manager loaded");
 
 class Task {
-  static lastId = 0;
-  #id // private
-  constructor(title) {
-    this.title = title
-    this.#id = ++Task.lastId
-    this.completed = false
-  }
-  // getter for id
-  get id() {
-    return this.#id
-  }
-  toggleComplete() {
-    this.completed = !this.completed
-  }
+	static lastId = 0;
+	#id; // private
+	constructor(title) {
+		this.title = title;
+		this.#id = ++Task.lastId;
+		this.completed = false;
+	}
+	// getter for id
+	get id() {
+		return this.#id;
+	}
+	toggleComplete() {
+		this.completed = !this.completed;
+	}
 }
 
-const task1 = new Task("new task")
+const task1 = new Task("new task");
 
 // ===========================
 // Шаг 2: Класс TaskList
@@ -31,23 +31,37 @@ const task1 = new Task("new task")
 // - toggleTask(id): переключает completed у задачи
 // - getTasks(): возвращает текущий список задач
 // - saveToLocalStorage(): сохраняет задачи в localStorage
-// - loadFromLocalStorage(): загружает задачи из 
+// - loadFromLocalStorage(): загружает задачи из
 
 class TaskList {
-  constructor() {
-    this.tasks = []
-  }
-  addTask(title) {
-    let newTask = new Task(title)
-    console.log(newTask)
-    this.tasks.push(newTask)
-  }
+	constructor() {
+		this.tasks = [];
+	}
+	addTask(title) {
+		let newTask = new Task(title);
+		this.tasks.push(newTask);
+	}
+	deleteTask(id) {
+		this.tasks = this.tasks.filter(task => task.id !== id);
+	}
+	toggleTask(id) {
+		const taskToToggle = this.tasks.find(task => task.id === id);
+		taskToToggle.toggleComplete();
+	}
+	getTasks() {
+		return this.tasks;
+	}
 }
 
-const list1 = new TaskList()
-console.log(list1.tasks)
-list1.addTask("hooi")
-list1.tasks.map(task => console.log(task))
+const list1 = new TaskList();
+console.log(list1.tasks);
+list1.addTask("hooi");
+list1.addTask("ho");
+console.log(list1.tasks);
+list1.deleteTask(3);
+console.log(list1.tasks);
+list1.toggleTask(2);
+console.log(list1.getTasks());
 
 // ===========================
 // Шаг 3: Работа с DOM
