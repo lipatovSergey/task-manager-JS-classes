@@ -1,11 +1,4 @@
 console.log("Task manager loaded");
-// ===========================
-// Шаг 1: Класс Task
-// ===========================
-// Создать класс Task с полями:
-// - id (уникальный идентификатор)
-// - title (название задачи)
-// - completed (булевое значение выполнена или нет)
 
 class Task {
   static lastId = 0;
@@ -26,13 +19,6 @@ class Task {
 
 const task1 = new Task("new task")
 
-const task2 = new Task("task2")
-console.log(task2)
-task2.toggleComplete()
-console.log(task2)
-
-// Добавить метод toggleComplete() для смены состояния completed
-
 // ===========================
 // Шаг 2: Класс TaskList
 // ===========================
@@ -45,7 +31,23 @@ console.log(task2)
 // - toggleTask(id): переключает completed у задачи
 // - getTasks(): возвращает текущий список задач
 // - saveToLocalStorage(): сохраняет задачи в localStorage
-// - loadFromLocalStorage(): загружает задачи из localStorage
+// - loadFromLocalStorage(): загружает задачи из 
+
+class TaskList {
+  constructor() {
+    this.tasks = []
+  }
+  addTask(title) {
+    let newTask = new Task(title)
+    console.log(newTask)
+    this.tasks.push(newTask)
+  }
+}
+
+const list1 = new TaskList()
+console.log(list1.tasks)
+list1.addTask("hooi")
+list1.tasks.map(task => console.log(task))
 
 // ===========================
 // Шаг 3: Работа с DOM
