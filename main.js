@@ -17,22 +17,6 @@ class Task {
 	}
 }
 
-const task1 = new Task("new task");
-
-// ===========================
-// Шаг 2: Класс TaskList
-// ===========================
-// Создать класс TaskList, который управляет массивом задач:
-// - tasks (массив объектов Task)
-
-// Методы:
-// - addTask(title): создаёт и добавляет новую задачу
-// - removeTask(id): удаляет задачу по id
-// - toggleTask(id): переключает completed у задачи
-// - getTasks(): возвращает текущий список задач
-// - saveToLocalStorage(): сохраняет задачи в localStorage
-// - loadFromLocalStorage(): загружает задачи из
-
 class TaskList {
 	constructor() {
 		this.tasks = [];
@@ -51,6 +35,12 @@ class TaskList {
 	getTasks() {
 		return this.tasks;
 	}
+	saveToLocalStorage() {
+	  localStorage.setItem("tasks", this.tasks)
+	}
+	loadFromLocalStorage() {
+	  this.items = localStorage.getItem("tasks")
+	}
 }
 
 const list1 = new TaskList();
@@ -58,10 +48,12 @@ console.log(list1.tasks);
 list1.addTask("hooi");
 list1.addTask("ho");
 console.log(list1.tasks);
-list1.deleteTask(3);
 console.log(list1.tasks);
 list1.toggleTask(2);
 console.log(list1.getTasks());
+list1.saveToLocalStorage()
+console.log('localStorage: ',localStorage.tasks)
+list1.deleteTask
 
 // ===========================
 // Шаг 3: Работа с DOM
