@@ -33,10 +33,16 @@ class TaskList {
 		taskToToggle.toggleComplete();
 	}
 	saveToLocalStorage() {
-		localStorage.setItem("tasks", this.tasks);
+		// must use stringify while work with localStorage
+		localStorage.setItem("tasks", JSON.stringify(this.tasks));
 	}
 	loadFromLocalStorage() {
-		this.items = localStorage.getItem("tasks");
+		// must use parse while get inf from localStorage
+		const data = localStorage.getItem("tasks");
+		if (data) {
+			const parsed = JSON.parse(data);
+			this.tasks = parsed.map(t => new Task(t.title));
+		}
 	}
 }
 
@@ -45,8 +51,6 @@ const taskInput = document.querySelector("#task-input");
 const taskList = document.querySelector("#task-list");
 
 const list1 = new TaskList();
-list1.addTask("dsfsdf");
-list1.addTask("1111");
 
 function renderTasks() {
 	taskList.innerHTML = ""; // clean ul
