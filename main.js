@@ -36,7 +36,7 @@ class TaskList {
 		// must use stringify while work with localStorage
 		localStorage.setItem("tasks", JSON.stringify(this.tasks));
 	}
-	// FIXME: on load for each task from local storage create new Task. Every new Task gots new ID. It means that IDs wont be saved correctly. For example user adds 3 tasks. The last one have #id: 3. User deletes the second task. It's update local storage. Now in localStorage only 2 tasks and after window reload task that had #id: 3 will get #id:2.
+	// FIXME: Issue_1 on load for each task from local storage create new Task. Every new Task gots new ID. It means that IDs wont be saved correctly. For example user adds 3 tasks. The last one have #id: 3. User deletes the second task. It's update local storage. Now in localStorage only 2 tasks and after window reload task that had #id: 3 will get #id:2.
 	loadFromLocalStorage() {
 		// must use parse while get inf from localStorage
 		const data = localStorage.getItem("tasks");
@@ -61,7 +61,7 @@ list1.loadFromLocalStorage();
 renderTasks();
 console.log(list1);
 
-// FIXME: Full rerendering on each action not good practice at all. It's will be better to update only specific element.
+// FIXME: Issue_2 Full rerendering on each action not good practice at all. It's will be better to update only specific element.
 function renderTasks() {
 	taskList.innerHTML = ""; // clean ul
 	list1.tasks.forEach(task => {
@@ -83,13 +83,13 @@ function renderTasks() {
 		toggleStatusBtn.addEventListener("click", function (e) {
 			e.preventDefault();
 			list1.toggleTask(task.id);
-			// FIXME: in this realisation toggling class here is excessive(избыточно). renderTasks() will rerender all list and logic in if(task.completed) will set the right class
+			// FIXME: Issue_3 in this realisation toggling class here is excessive(избыточно). renderTasks() will rerender all list and logic in if(task.completed) will set the right class
 			this.classList.toggle("done");
 			renderTasks();
 		});
 		li.appendChild(toggleStatusBtn);
 		taskList.appendChild(li);
-		// FIXME: I am saving tasks to localStorage inside forEach loop in render function. It means that if 10 tasks will be rendered it will save be 10 times to localStorage. For each rendered task.
+		// FIXME: Issue_4 I am saving tasks to localStorage inside forEach loop in render function. It means that if 10 tasks will be rendered it will save be 10 times to localStorage. For each rendered task.
 		list1.saveToLocalStorage();
 	});
 }
