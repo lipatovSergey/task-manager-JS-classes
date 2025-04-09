@@ -34,3 +34,7 @@ body {
 	text-decoration: line-through;
 	color: #999;
 }
+
+.done {
+	background-color: green;
+}
