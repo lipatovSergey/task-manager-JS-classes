@@ -32,36 +32,46 @@ class TaskList {
 		const taskToToggle = this.tasks.find(task => task.id === id);
 		taskToToggle.toggleComplete();
 	}
-	getTasks() {
-		return this.tasks;
-	}
 	saveToLocalStorage() {
-	  localStorage.setItem("tasks", this.tasks)
+		localStorage.setItem("tasks", this.tasks);
 	}
 	loadFromLocalStorage() {
-	  this.items = localStorage.getItem("tasks")
+		this.items = localStorage.getItem("tasks");
 	}
 }
 
+const form = document.querySelector("#task-form");
+const taskInput = document.querySelector("#task-input");
+const taskList = document.querySelector("#task-list");
+
 const list1 = new TaskList();
-console.log(list1.tasks);
-list1.addTask("hooi");
-list1.addTask("ho");
-console.log(list1.tasks);
-console.log(list1.tasks);
-list1.toggleTask(2);
-console.log(list1.getTasks());
-list1.saveToLocalStorage()
-console.log('localStorage: ',localStorage.tasks)
-list1.deleteTask
+list1.addTask("dsfsdf");
+list1.addTask("1111");
+
+function renderTasks() {
+	taskList.innerHTML = ""; // clean ul
+	list1.tasks.forEach(task => {
+		const li = document.createElement("li");
+		li.textContent = task.title;
+		taskList.appendChild(li);
+	});
+}
+
+form.addEventListener("submit", function (event) {
+	event.preventDefault();
+
+	const formData = new FormData(form);
+	const taskName = formData.get("task-name"); // use input's name in get
+	if (taskName.trim() !== "") {
+		list1.addTask(taskName);
+	}
+	form.reset();
+	renderTasks();
+});
 
 // ===========================
 // Шаг 3: Работа с DOM
 // ===========================
-// Получить элементы:
-// - форму добавления задачи
-// - input с текстом
-// - список задач (ul)
 
 // Добавить обработчик события submit:
 // - предотвратить перезагрузку
