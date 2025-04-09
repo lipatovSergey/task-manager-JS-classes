@@ -36,7 +36,7 @@ class TaskList {
 		// must use stringify while work with localStorage
 		localStorage.setItem("tasks", JSON.stringify(this.tasks));
 	}
-	// FIXME: Issue_1 on load for each task from local storage create new Task. Every new Task gots new ID. It means that IDs wont be saved correctly. For example user adds 3 tasks. The last one have #id: 3. User deletes the second task. It's update local storage. Now in localStorage only 2 tasks and after window reload task that had #id: 3 will get #id:2.
+	// FIXME: Issue_1 on load for each task from local storage create new Task. Every new Task gots new ID. It means that IDs wont be saved correctly. For example user adds 3 tasks. The last one have #id: 3. User deletes the second task. It's update local storage. Now in localStorage only 2 tasks and after window reload task that had #id: 3 will get #id:2. See review.md
 	loadFromLocalStorage() {
 		// must use parse while get inf from localStorage
 		const data = localStorage.getItem("tasks");
