@@ -3,14 +3,14 @@ console.log("Task manager loaded");
 class Task {
 	static lastId = 0;
 	#id; // private
-	constructor(title) {
+	constructor(title, id) {
 		this.title = title;
-		this.#id = ++Task.lastId;
+		// if task has id, save it? else give it new id
+		this.#id = id === undefined ? ++Task.lastId : id;
 		this.completed = false;
 	}
-	// getter for id
 	get id() {
-		return this.#id;
+		return this.#id
 	}
 	toggleComplete() {
 		this.completed = !this.completed;
@@ -34,23 +34,25 @@ class TaskList {
 	}
 	saveToLocalStorage() {
 		// must use stringify while work with localStorage
-		localStorage.setItem("tasks", JSON.stringify(this.tasks));
+		// id is private field, must make new objects for tasks to save it correctly, with ids
+		const tasksToSave = this.tasks.map((t) => ({
+			title: t.title,
+			id: t.id,
+			completed: t.completed
+		}))
+		localStorage.setItem("tasks", JSON.stringify(tasksToSave));
 	}
-	// FIXME: Issue_1 on load for each task from local storage create new Task. Every new Task gots new ID. It means that 
-	// IDs wont be saved correctly. For example user adds 3 tasks. The last one have #id: 3. User deletes the second 
-	// task. It's update local storage. Now in localStorage only 2 tasks and after window reload task that had #id: 3 
-	// will get #id:2.
 	loadFromLocalStorage() {
 		// must use parse while get inf from localStorage
 		const data = localStorage.getItem("tasks");
 		if (data) {
 			const parsed = JSON.parse(data);
-			this.tasks = parsed.map(t => {
-				const task = new Task(t.title);
-				// if task status was completed, set it completed
-				if (t.completed) task.completed = true;
-				return task;
-			});
+			this.tasks = parsed.map(t => new Task(t.title, t.id))
+			if(this.tasks.length > 0) {
+				// here I used spread operator because Math.max() can take only numbers
+				// whithout spread Math.max([1, 2, 3]) with spread Math.max(1, 2, 3)
+				Task.lastId = Math.max(...this.tasks.map(t => t.id))
+			}
 		}
 	}
 }
@@ -64,8 +66,7 @@ list1.loadFromLocalStorage();
 renderTasks();
 console.log(list1);
 
-// FIXME: Issue_2 Full rerendering on each action not good practice at all. It's will be better 
-// to update only specific element.
+// FIXME: Issue_2 Full rerendering on each action not good practice at all. It's will be better to update only specific element.
 function renderTasks() {
 	taskList.innerHTML = ""; // clean ul
 	list1.tasks.forEach(task => {
@@ -87,15 +88,13 @@ function renderTasks() {
 		toggleStatusBtn.addEventListener("click", function (e) {
 			e.preventDefault();
 			list1.toggleTask(task.id);
-			// FIXME: Issue_3 in this realisation toggling class here is excessive(избыточно). renderTasks() will rerender 
-			// all list and logic in if(task.completed) will set the right class
+			// FIXME: Issue_3 in this realisation toggling class here is excessive(избыточно). renderTasks() will rerender all list and logic in if(task.completed) will set the right class
 			this.classList.toggle("done");
 			renderTasks();
 		});
 		li.appendChild(toggleStatusBtn);
 		taskList.appendChild(li);
-		// FIXME: Issue_4 I am saving tasks to localStorage inside forEach loop in render function. It means that if 10 
-		// tasks will be rendered it will save be 10 times to localStorage. For each rendered task.
+		// FIXME: Issue_4 I am saving tasks to localStorage inside forEach loop in render function. It means that if 10 tasks will be rendered it will save be 10 times to localStorage. For each rendered task.
 		list1.saveToLocalStorage();
 	});
 }
