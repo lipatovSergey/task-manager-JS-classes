@@ -60,7 +60,7 @@ class TaskList {
 const form = document.querySelector("#task-form");
 const taskInput = document.querySelector("#task-input");
 const taskList = document.querySelector("#task-list");
-
+// some test comment
 const list1 = new TaskList();
 list1.loadFromLocalStorage();
 renderTasks();
